@@ -1,0 +1,70 @@
+.navBar {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  display: inline-block;
+  font-size: 16px;
+}
+
+.nav-title {
+  width: 100%;
+}
+
+.nav-title button {
+  width: 300px !important;
+}
+
+#addVehiclesWrapper button,
+#addCustomersWrapper button,
+#addRentalEventsWrapper button {
+  width: 300px !important;
+}
+
+.nav-title h1 {
+  font-size: 70px;
+  font-weight: 700;
+}
+
+#toogleList {
+  float: left !important;
+}
+
+#toogleTheme {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+}
+
+.navbar button span {
+  color: green !important;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#rentalEvent {
+  position: absolute;
+  float: right;
+}
+
+.buttonWrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media only screen and (max-width: 500px) {
+  .buttonWrapper button {
+    width: 30% !important;
+    height: 80px;
+  }
+
+  #toogleTheme {
+    position: relative;
+    margin-right: 50%;
+    transform: translate(50%);
+  }
+}

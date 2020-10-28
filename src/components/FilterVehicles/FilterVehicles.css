@@ -1,0 +1,44 @@
+#filters-wrapper {
+  padding: 10px;
+  min-height: 50px;
+  max-height: 800px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#showVechicles,
+#showCustomers {
+  width: 100%;
+  display: inline-block;
+}
+
+.filterSelect label {
+  width: auto !important;
+}
+
+.search {
+  width: 100%;
+}
+
+.search-input {
+  width: 30%;
+}
+
+#vehicleTypeFilter {
+  width: 20%;
+}
+
+input,
+select {
+  border-radius: 20px;
+}
+
+@media only screen and (max-width: 500px) {
+  .search-input {
+    width: 60%;
+  }
+
+  #vehicleTypeFilter {
+    width: 40%;
+  }
+}
