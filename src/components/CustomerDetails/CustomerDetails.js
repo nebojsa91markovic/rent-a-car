@@ -68,6 +68,10 @@ const CustomerDetails = ({ customer, isLightTheme }) => {
     }
   };
 
+  const handleDelete = (id) => {
+    dispatch({ type: "REMOVE_CUSTOMER", customer: { id } });
+  };
+
   return (
     <li key={uuidv4()}>
       <div className="customerValue">
@@ -120,9 +124,11 @@ const CustomerDetails = ({ customer, isLightTheme }) => {
       </div>
       <button
         className={isLightTheme ? "lightThemeUI" : "darkThemeUI"}
-        onClick={() =>
-          dispatch({ type: "REMOVE_CUSTOMER", customer: { id: customer.id } })
-        }
+        onClick={() => {
+          if (window.confirm("Do you wish to delete this customer")) {
+            handleDelete(customer.id);
+          }
+        }}
       >
         DELETE
       </button>

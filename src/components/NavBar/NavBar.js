@@ -6,12 +6,7 @@ import { CustomerContext } from "../../context/CustomerContext";
 import CustomersCollection from "../../collections/CustomersCollection";
 import "./NavBar.css";
 
-const NavBar = ({
-  isLightTheme,
-  currentPage,
-  setCurrentPage,
-  setIsLightTheme,
-}) => {
+const NavBar = ({ isLightTheme, setCurrentPage, setIsLightTheme }) => {
   const { customers, dispatch } = useContext(CustomerContext);
 
   const getAllCustomers = async () => {

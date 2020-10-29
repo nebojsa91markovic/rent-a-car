@@ -5,9 +5,11 @@ import { v4 as uuidv4 } from "uuid";
 
 const VehicleDetails = ({ vehicle }) => {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [imgModalIsOpen, setImgModalIsOpen] = useState(false);
 
   const { dispatch } = useContext(VehicleContext);
   let subtitle;
+  let imgFullSize;
 
   const [brand, setBrand] = useState(vehicle.brand);
   const [model, setModel] = useState(vehicle.model);
@@ -22,14 +24,31 @@ const VehicleDetails = ({ vehicle }) => {
   const [type, setType] = useState(vehicle.type);
   const [id, setId] = useState(vehicle.id);
 
-  const vehicleTypes = ["economy", "estate", "luxury", "SUV", "cargo"];
-  const vehicleFuelTypes = ["petrol", "diesel", "hybrid", "electric"];
+  const vehicleTypes = ["Economy", "Estate", "Luxury", "SUV", "Cargo"];
+  const vehicleFuelTypes = ["Petrol", "Diesel", "Hybrid", "Electric"];
+
+  const customStyle = {
+    backgroundColor: "red",
+  };
 
   useEffect(() => {
     setIsOpen(false);
     Modal.setAppElement("#addVehiclesWrapper");
   }, []);
 
+  //Image Modal for bigger picture
+  function openImgModal() {
+    setImgModalIsOpen(true);
+  }
+  function afterOpenImgModal() {
+    imgFullSize.setAttribute("style", "width: 80%; height: auto; ");
+  }
+
+  function closeImgModal() {
+    setImgModalIsOpen(false);
+  }
+
+  //Modal for editing Vehicle Details
   function openModal() {
     setIsOpen(true);
   }
@@ -39,6 +58,16 @@ const VehicleDetails = ({ vehicle }) => {
 
   function closeModal() {
     setIsOpen(false);
+
+    setBrand(vehicle.brand);
+    setModel(vehicle.model);
+    setConstructionYear(vehicle.construstionYear);
+    setFuelType(vehicle.fuelType);
+    setNumberofSeats(vehicle.numberOfSeats);
+    setPicture(vehicle.picture);
+    setPricePerDay(vehicle.pricePerDay);
+    setCount(vehicle.count);
+    setType(vehicle.type);
   }
 
   const handleSubmit = (event) => {
@@ -61,6 +90,11 @@ const VehicleDetails = ({ vehicle }) => {
     setIsOpen(false);
   };
 
+  const editVehicle = (event) => {
+    openModal(true);
+    console.log(event.target);
+  };
+
   const handleFuelSelect = (event) => {
     setFuelType(event.target.value);
   };
@@ -69,13 +103,32 @@ const VehicleDetails = ({ vehicle }) => {
     setType(event.target.value);
   };
 
+  const handleDelete = (id) => {
+    dispatch({ type: "REMOVE_VEHICLE", vehicle: { id } });
+  };
+
   return (
-    <tr onDoubleClick={openModal}>
+    <tr onDoubleClick={(event) => editVehicle(event)}>
+      {/* Modal for full size image */}
+      <Modal
+        id="imageModal"
+        isOpen={imgModalIsOpen}
+        onAfterOpen={afterOpenImgModal}
+        onRequestClose={closeImgModal}
+        contentLabel={vehicle.model}
+      >
+        <img
+          ref={(_imgFullSize) => (imgFullSize = _imgFullSize)}
+          src={vehicle.picture}
+          alt={vehicle.modal}
+        />
+      </Modal>
+      {/* Modal for editing vehicle */}
       <Modal
         isOpen={modalIsOpen}
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
-        contentLabel="Example Modal"
+        contentLabel="Edit Vehicle Details"
       >
         <form onSubmit={handleSubmit}>
           <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Edit Vehicle</h2>
@@ -171,7 +224,7 @@ const VehicleDetails = ({ vehicle }) => {
         </form>
       </Modal>
       <td>
-        <img src={vehicle.picture} alt={vehicle.model} />
+        <img src={vehicle.picture} alt={vehicle.model} onClick={openImgModal} />
       </td>
       <td>{vehicle.brand}</td>
       <td>{vehicle.model}</td>
@@ -183,9 +236,11 @@ const VehicleDetails = ({ vehicle }) => {
       <td>{vehicle.count}</td>
       <td>
         <button
-          onClick={() =>
-            dispatch({ type: "REMOVE_VEHICLE", vehicle: { id: vehicle.id } })
-          }
+          onClick={() => {
+            if (window.confirm("Do you wish to delete this vehicle")) {
+              handleDelete(vehicle.id);
+            }
+          }}
         >
           DELETE
         </button>

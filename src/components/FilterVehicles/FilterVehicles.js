@@ -9,7 +9,7 @@ const FilterVehicles = ({ isLightTheme }) => {
   const { vehicles, dispatch } = useContext(VehicleContext);
   const [searchValue, setSearchValue] = useState("");
   const [filter, setFilter] = useState("all");
-  const vehicleTypes = ["economy", "estate", "luxury", "SUV", "cargo"];
+  const vehicleTypes = ["Economy", "Estate", "Luxury", "SUV", "Cargo"];
 
   const getAllVechiles = () => {
     let allVehicles = [];
@@ -36,11 +36,21 @@ const FilterVehicles = ({ isLightTheme }) => {
   };
 
   const handleSearchResults = () => {
-    if (searchValue === "") return vehicles;
+    if (searchValue.trim("").length === 0) return vehicles;
     let newArray = [];
-    vehicles.map((vehicle) =>
-      Object.values(vehicle).includes(searchValue) ? newArray.push(vehicle) : ""
-    );
+    vehicles.map((vehicle) => {
+      for (const [key, value] of Object.entries(vehicle)) {
+        if (
+          value
+            .toString()
+            .startsWith(
+              searchValue.charAt(0).toUpperCase() + searchValue.slice(1)
+            )
+        ) {
+          newArray.push(vehicle);
+        }
+      }
+    });
     return newArray;
   };
 

@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  cursor: default;
 }
 
 .App {
@@ -51,10 +52,12 @@ button {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.7s ease !important;
 }
 
 button:hover {
   scale: 1.1;
+  background-color: red;
 }
 
 #showCustomers {
@@ -71,6 +74,14 @@ button:hover {
   float: right !important;
   color: orange;
   font-weight: bold;
+}
+
+#discountDesc {
+  display: none;
+}
+
+#discount:hover label {
+  border: 1px solid;
 }
 
 @media only screen and (max-width: 700px) {

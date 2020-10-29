@@ -9,8 +9,8 @@ import VehiclesCollection from "../../collections/VehiclesCollection";
 const AddVehicle = ({ isLightTheme }) => {
   const { dispatch } = useContext(VehicleContext);
   let subtitle;
-  const vehicleTypes = ["economy", "estate", "luxury", "SUV", "cargo"];
-  const vehicleFuelTypes = ["petrol", "diesel", "hybrid", "electric"];
+  const vehicleTypes = ["Economy", "Estate", "Luxury", "SUV", "Cargo"];
+  const vehicleFuelTypes = ["Petrol", "Diesel", "Hybrid", "Electric"];
   useEffect(() => {
     Modal.setAppElement("#addVehiclesWrapper");
   }, []);
@@ -28,6 +28,16 @@ const AddVehicle = ({ isLightTheme }) => {
 
   function openModal() {
     setIsOpen(true);
+
+    setBrand("");
+    setModel("");
+    setConstructionYear("");
+    setFuelType("");
+    setNumberofSeats("");
+    setPicture("");
+    setPricePerDay("");
+    setCount("");
+    setType("");
   }
   function afterOpenModal() {
     subtitle.style.color = "#f00";
@@ -52,6 +62,14 @@ const AddVehicle = ({ isLightTheme }) => {
       type,
       id,
     };
+
+    for (const [key, value] of Object.entries(newVehicle)) {
+      if (value.trim("").length === 0) {
+        alert(`${key} is not insert.`);
+        return;
+      }
+    }
+
     VehiclesCollection.doc(id).set(newVehicle);
     dispatch({
       type: "ADD_VEHICLE",
@@ -70,16 +88,6 @@ const AddVehicle = ({ isLightTheme }) => {
     });
 
     setIsOpen(false);
-
-    setBrand("");
-    setModel("");
-    setConstructionYear("");
-    setFuelType("");
-    setNumberofSeats("");
-    setPicture("");
-    setPricePerDay("");
-    setCount("");
-    setType("");
   };
 
   const handleFuelSelect = (event) => {
@@ -141,10 +149,13 @@ const AddVehicle = ({ isLightTheme }) => {
           <div className="inputRow">
             <label>Fuel Type:</label>
             <select
-              value={fuelType}
+              defaultValue="fuelType"
               id="vehicleFuelType"
               onChange={handleFuelSelect}
             >
+              <option value="fuelType" disabled>
+                Select fuel type...
+              </option>
               {vehicleFuelTypes.map((vehicleFuelType) => (
                 <option key={uuidv4()} value={vehicleFuelType}>
                   {vehicleFuelType}
@@ -194,7 +205,14 @@ const AddVehicle = ({ isLightTheme }) => {
           </div>
           <div className="inputRow">
             <label>Type:</label>
-            <select value={type} id="vehicleType" onChange={handleTypeSelect}>
+            <select
+              defaultValue="vehicleTypes"
+              id="vehicleType"
+              onChange={handleTypeSelect}
+            >
+              <option value="vehicleTypes" disabled>
+                Select vehicle type...
+              </option>
               {vehicleTypes.map((vehicleType) => (
                 <option key={uuidv4()} value={vehicleType}>
                   {vehicleType}

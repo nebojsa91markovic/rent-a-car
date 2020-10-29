@@ -24,13 +24,15 @@ const FilterCustomers = ({ isLightTheme }) => {
   };
 
   const filteredCustomers = () => {
-    if (searchValue === "") return customers;
+    if (searchValue.trim("").length === 0) return customers;
     let newArray = [];
-    customers.map((customer) =>
-      Object.values(customer).includes(searchValue)
-        ? newArray.push(customer)
-        : ""
-    );
+    customers.map((customer) => {
+      for (const [key, value] of Object.entries(customer)) {
+        if (value.startsWith(searchValue)) {
+          newArray.push(customer);
+        }
+      }
+    });
     return newArray;
   };
 

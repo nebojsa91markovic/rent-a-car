@@ -18,11 +18,11 @@ const AddRentalEvent = ({ isLightTheme }) => {
   const [endTime, setEndTime] = useState("");
   const [vehicle, setVehicle] = useState("");
   const [customer, setCustomer] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState("zzz");
   const [vehicleID, setVehicleID] = useState("");
   const [vehicleCount, setVehicleCount] = useState("");
   const [discount, setDiscount] = useState(0);
-  const [finalPrice, setFinalPrice] = useState(0);
+  const [finalPrice, setFinalPrice] = useState("");
 
   useEffect(() => {
     Modal.setAppElement("#addRentalEventsWrapper");
@@ -31,6 +31,13 @@ const AddRentalEvent = ({ isLightTheme }) => {
 
   function openModal() {
     setIsOpen(true);
+
+    setStartDate("");
+    setStartTime("");
+    setEndDate("");
+    setEndTime("");
+    setVehicle("");
+    setCustomer("");
   }
   function afterOpenModal() {
     subtitle.style.color = "#f00";
@@ -42,79 +49,80 @@ const AddRentalEvent = ({ isLightTheme }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch({
-      type: "ADD_RENTAL_EVENT",
-      rentalEvent: {
-        startDate,
-        startTime,
-        endDate,
-        endTime,
-        vehicle,
-        customer,
-        finalPrice: finalPrice,
-        id: uuidv4(),
-      },
-      vehicleID: vehicleID,
-      vehicleCount: vehicleCount,
-    });
+
+    if (finalPrice === 0) {
+      alert(
+        "You probobaly didn't select something right! Please reselect again."
+      );
+      return;
+    }
+
+    if (finalPrice.trim("").length !== 0)
+      dispatch({
+        type: "ADD_RENTAL_EVENT",
+        rentalEvent: {
+          startDate,
+          startTime,
+          endDate,
+          endTime,
+          vehicle,
+          customer,
+          finalPrice: finalPrice,
+          id: uuidv4(),
+        },
+        vehicleID: vehicleID,
+        vehicleCount: vehicleCount,
+      });
 
     setIsOpen(false);
-
-    setStartDate("");
-    setStartTime("");
-    setEndDate("");
-    setEndTime("");
-    setVehicle("");
-    setCustomer("");
   };
 
   const handleCurrentPrice = () => {
-    if (
-      startDate !== "" &&
-      endDate !== "" &&
-      vehicle !== "" &&
-      customer !== ""
-    ) {
-      const today = moment();
-      const lastSixtyDays = moment().subtract(60, "days");
+    //Checking if customer have more than 3 rents in last 60 days
+    //to give 15% discount
+    const today = moment();
+    const lastSixtyDays = moment().subtract(60, "days");
 
-      let rentDays = Math.abs(moment(startDate).diff(endDate, "days"));
+    let rentDays = Math.abs(moment(startDate).diff(endDate, "days"));
 
-      let lastSixtyDaysEvents = rentalEvent.filter((rental) =>
-        moment(rental.endDate).isBetween(lastSixtyDays, today)
-      );
-      let customerCounter = [];
-      lastSixtyDaysEvents.forEach((event) => {
-        if (event.customer === customer) {
-          customerCounter.push(event.customer);
-        }
-      });
+    let lastSixtyDaysEvents = rentalEvent.filter((rental) =>
+      moment(rental.endDate).isBetween(lastSixtyDays, today)
+    );
+    let customerCounter = [];
+    lastSixtyDaysEvents.forEach((event) => {
+      if (event.customer === customer) {
+        customerCounter.push(event.customer);
+      }
+    });
 
-      let currentPrice = price * rentDays;
-      if (rentDays === 0) {
-        setFinalPrice(price);
+    //Check for discount
+    let currentPrice = price * rentDays;
+    if (rentDays === 0) {
+      setFinalPrice(price);
+    } else {
+      if (customerCounter.length > 3) {
+        setDiscount(15);
+        setFinalPrice(currentPrice * 0.85);
       } else {
-        if (customerCounter.length > 3) {
-          setDiscount(15);
-          setFinalPrice(currentPrice * 0.85);
-        } else {
-          if (rentDays > 10) {
-            setDiscount(10);
-            setFinalPrice(currentPrice * 0.9);
-          } else if (rentDays > 5) {
-            setDiscount(7);
-            setFinalPrice(currentPrice * 0.93);
-          } else if (rentDays > 3) {
-            setDiscount(3);
-            setFinalPrice(currentPrice * 0.95);
-          }
+        if (rentDays > 10) {
+          setDiscount(10);
+          setFinalPrice(currentPrice * 0.9);
+        } else if (rentDays > 5) {
+          setDiscount(7);
+          setFinalPrice(currentPrice * 0.93);
+        } else if (rentDays > 3) {
+          setDiscount(3);
+          setFinalPrice(currentPrice * 0.95);
         }
       }
     }
   };
 
-  const handleVehicleSelect = (event) => {
+  const setValues = (event, price, id, count) => {
     setVehicle(event.target.value);
+    setPrice(price);
+    setVehicleID(id);
+    setVehicleCount(count);
   };
 
   const handleCustomerSelect = (event) => {
@@ -178,17 +186,23 @@ const AddRentalEvent = ({ isLightTheme }) => {
           <div className="inputRow">
             <label htmlFor="vehicle">Choose a car:</label>
 
-            <select value={vehicle} id="vehicle" onChange={handleVehicleSelect}>
+            <select id="vehicle" defaultValue="selectVehicle">
+              <option value="selectVehicle" disabled>
+                Select vehicle...
+              </option>
               {vehicles.map((vehicle) =>
                 vehicle.count > 0 ? (
                   <option
                     key={uuidv4()}
                     value={vehicle.model}
-                    onClick={(event) => {
-                      setPrice(vehicle.pricePerDay);
-                      setVehicleID(vehicle.id);
-                      setVehicleCount(vehicle.count);
-                    }}
+                    onClick={(event) =>
+                      setValues(
+                        event,
+                        vehicle.pricePerDay,
+                        vehicle.id,
+                        vehicle.count
+                      )
+                    }
                   >
                     {vehicle.model}
                   </option>
@@ -202,10 +216,13 @@ const AddRentalEvent = ({ isLightTheme }) => {
             <label htmlFor="customer">Choose a Customer:</label>
 
             <select
-              value={customer}
+              defaultValue="selectCustomer"
               id="customer"
               onChange={handleCustomerSelect}
             >
+              <option value="selectCustomer" disabled>
+                Select customer...
+              </option>
               {customers.map((customer) => (
                 <option key={uuidv4()} value={customer.name}>
                   {customer.name}

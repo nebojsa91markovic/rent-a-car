@@ -1,3 +1,15 @@
 .customerValue span {
   cursor: pointer;
 }
+
+.customerValue:hover {
+  border: 1px solid grey;
+  border-radius: 10px;
+  filter: contrast(200%);
+}
+
+li button:hover {
+  background-color: red !important;
+  border-radius: 10px !important;
+  height: 200%;
+}

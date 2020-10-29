@@ -20,6 +20,11 @@
   width: 100%;
 }
 
+.search-button:hover {
+  background-color: inherit !important;
+  filter: contrast(200%) !important;
+}
+
 .search-input {
   width: 30%;
 }

@@ -18,6 +18,10 @@ const AddCustomer = ({ isLightTheme }) => {
 
   function openModal() {
     setIsOpen(true);
+
+    setName("");
+    setEmail("");
+    setPhone("");
   }
   function afterOpenModal() {
     subtitle.style.color = "#f00";
@@ -29,12 +33,20 @@ const AddCustomer = ({ isLightTheme }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    let id = uuidv4();
-    dispatch({ type: "ADD_CUSTOMER", customer: { name, email, phone, id } });
-    setName("");
-    setEmail("");
-    setPhone("");
-    setIsOpen(false);
+
+    if (
+      name.trim("").length !== 0 ||
+      email.trim("").length !== 0 ||
+      phone.trim("").length !== 0
+    ) {
+      alert("Inputs can't be empty!");
+      return;
+    } else {
+      let id = uuidv4();
+      dispatch({ type: "ADD_CUSTOMER", customer: { name, email, phone, id } });
+
+      setIsOpen(false);
+    }
   };
 
   return (
