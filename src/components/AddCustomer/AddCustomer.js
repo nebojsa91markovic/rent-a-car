@@ -65,10 +65,10 @@ const AddCustomer = ({ isLightTheme }) => {
       >
         <form onSubmit={handleSubmit}>
           <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
-            <button className="closeModalBtn" onClick={closeModal}>
-              X
-            </button>
             Insert New Customer
+            <span className="closeModalBtn" onClick={closeModal}>
+              X
+            </span>
           </h2>
           <div className="inputRow">
             <label>Full Name:</label>

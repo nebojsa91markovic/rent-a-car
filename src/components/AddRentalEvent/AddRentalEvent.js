@@ -146,10 +146,10 @@ const AddRentalEvent = ({ isLightTheme }) => {
         <form onSubmit={handleSubmit} onChange={handleCurrentPrice}>
           <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
             Insert New RentalEvent
+            <span className="closeModalBtn" onClick={closeModal}>
+              X
+            </span>
           </h2>
-          <button className="closeModalBtn" onClick={closeModal}>
-            X
-          </button>
           <div className="inputRow">
             <label>Start Date:</label>
             <input

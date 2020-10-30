@@ -84,12 +84,22 @@ button:hover {
   border: 1px solid;
 }
 
-#closeModalBtn {
+.closeModalBtn {
   font-size: 28px;
-  position: absolute;
-  top: 5px;
-  right: 5px;
   background-color: rgba(0, 0, 0, 0);
+  color: black;
+  border: 1px solid black;
+  float: right;
+}
+
+.closeModalBtn::after,
+.closeModalBtn::before {
+  height: 20px;
+  width: 20px;
+  border-top: 1px solid #000;
+  position: absolute;
+  top: 7px;
+  right: -8px;
 }
 
 .closeModalBtn:hover {
