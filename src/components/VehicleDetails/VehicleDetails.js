@@ -132,6 +132,9 @@ const VehicleDetails = ({ vehicle }) => {
       >
         <form onSubmit={handleSubmit}>
           <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Edit Vehicle</h2>
+          <button className="closeModalBtn" onClick={closeModal}>
+            X
+          </button>
           <div className="inputRow">
             <label>Brand:</label>
             <input

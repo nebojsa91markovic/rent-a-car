@@ -18,7 +18,7 @@ const AddRentalEvent = ({ isLightTheme }) => {
   const [endTime, setEndTime] = useState("");
   const [vehicle, setVehicle] = useState("");
   const [customer, setCustomer] = useState("");
-  const [price, setPrice] = useState("zzz");
+  const [price, setPrice] = useState("");
   const [vehicleID, setVehicleID] = useState("");
   const [vehicleCount, setVehicleCount] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -147,6 +147,9 @@ const AddRentalEvent = ({ isLightTheme }) => {
           <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
             Insert New RentalEvent
           </h2>
+          <button className="closeModalBtn" onClick={closeModal}>
+            X
+          </button>
           <div className="inputRow">
             <label>Start Date:</label>
             <input

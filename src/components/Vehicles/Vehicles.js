@@ -6,6 +6,7 @@ import "./Vehicles.css";
 const Vehicles = (props) => {
   const filteredVehicles = Object.values(props)[0];
   const isLightTheme = Object.values(props)[1];
+
   return (
     <table className={isLightTheme ? "lightThemeUI" : "darkThemeUI"}>
       <tbody>
@@ -26,6 +27,7 @@ const Vehicles = (props) => {
         ))}
       </tbody>
     </table>
+    
   );
 };
 

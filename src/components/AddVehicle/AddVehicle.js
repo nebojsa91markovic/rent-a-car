@@ -114,6 +114,9 @@ const AddVehicle = ({ isLightTheme }) => {
       >
         <form onSubmit={handleSubmit}>
           <h2 ref={(_subtitle) => (subtitle = _subtitle)}>
+            <button className="closeModalBtn" onClick={closeModal}>
+              X
+            </button>
             Insert New Vehicle
           </h2>
           <div className="inputRow">
